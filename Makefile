@@ -1,11 +1,20 @@
 all:
-	@docker build -t nginx ./srcs/requirements/nginx
-	@docker run -d --name container_nginx -p 443:443 nginx
-	@docker ps
+	@docker compose -f ./srcs/docker-compose.yml up -d --build
+
+down:
+	@docker compose -f ./srcs/docker-compose.yml down
+
+re:
+	@docker compose -f srcs/docker-compose.yml up -d --build
+
+ps:
+	@docker ps -a
 
 clean:
-	@docker stop container_nginx
-	@docker rm container_nginx
-	@docker rmi nginx
+	@docker stop $$(docker ps -qa);\
+	docker rm $$(docker ps -qa);\
+	docker rmi -f $$(docker images -qa);\
+	# docker volume rm $$(docker volume ls -q);\
+	# docker network rm $$(docker network ls -q);\
 
-.PHONY: all clean
+.PHONY: all re down clean
