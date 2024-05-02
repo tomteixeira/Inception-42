@@ -5,12 +5,13 @@
 # this is read by the standalone daemon and embedded servers
 [server]
 
-port = 3306
+
 
 
 # this is only for the mysqld standalone daemon
 [mysqld]
-
+port = 3306
+socket = /run/mysqld/mysqld.sock
 #
 # * Basic Settings
 #

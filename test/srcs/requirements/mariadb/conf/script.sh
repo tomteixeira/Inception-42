@@ -1,6 +1,7 @@
 #!/bin/sh
 
-mysqld_safe & sleep 3
+mysqld_safe & 
+sleep 10
 
 mariadb -u root << _EOF
 
@@ -10,7 +11,7 @@ GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO $MARIA_DB_USER@'%';
 FLUSH PRIVILEGES;
 _EOF
 
-mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MARIA_DB_ROOT_PASSWORD';"
+mysql -e "ALTER USER 'root'@'toteixei.42.fr' IDENTIFIED BY '$MARIA_DB_ROOT_PASSWORD';"
 
 mysqladmin -u root -p$MARIA_DB_ROOT_PASSWORD shutdown
 
