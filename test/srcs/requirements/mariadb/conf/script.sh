@@ -1,18 +1,22 @@
 #!/bin/sh
 
-mysqld_safe & 
-sleep 10
+service mariadb start
 
-mariadb -u root << _EOF
+# Kill the anonymous users
+mariadb -e "DROP USER IF EXISTS ''@'localhost'"
 
-CREATE DATABASE $DB_NAME;
-CREATE USER $MARIA_DB_USER@'%' IDENTIFIED BY '$MARIA_DB_USER_PASSWORD';
-GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO $MARIA_DB_USER@'%';
-FLUSH PRIVILEGES;
-_EOF
+# Kill off the demo database
+mariadb -e "DROP DATABASE IF EXISTS test"
 
-mysql -e "ALTER USER 'root'@'toteixei.42.fr' IDENTIFIED BY '$MARIA_DB_ROOT_PASSWORD';"
+# Create Wordpress database
+mariadb -e "CREATE DATABASE $MYSQL_DATABASE"
 
-mysqladmin -u root -p$MARIA_DB_ROOT_PASSWORD shutdown
+# Create Mariadb/Wordpress user
+mariadb -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD'"
 
-mysqld_safe
+# Grant privileges to user
+mariadb -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* to '$MYSQL_USER'@'%'"
+
+# Make sure that NOBODY can access the server without a password
+mariadb -e "ALTER USER '$MYSQL_ROOT'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'"
+mariadb -e "FLUSH PRIVILEGES"
