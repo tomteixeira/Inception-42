@@ -1,6 +1,6 @@
 FROM debian:bullseye
 
-RUN apt update && apt upgrade && apt install -y nginx openssl \
+RUN apt update && apt install -y nginx openssl \
     && rm -rf /var/lib/apt/lists/*
 
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:4096 \

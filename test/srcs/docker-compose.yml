@@ -11,6 +11,9 @@ services:
     restart: always
     networks:
       - inception
+    depends_on:
+      - mariadb
+      - wordpress
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress/.
@@ -23,6 +26,8 @@ services:
       - .env
     expose:
       - 9000
+    depends_on:
+      - mariadb
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb/.
@@ -42,14 +47,14 @@ volumes:
     driver_opts: 
       type: none
       o: bind
-      device: /home/toteixei/data/db
+      device: /home/azureuser/data/db
   wordpress_volume:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/toteixei/data/wordpress
+      device: /home/azureuser/data/wordpress
 
 networks:
   inception:
-    driver: bridge
+    name: inception
