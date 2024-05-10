@@ -1,5 +1,5 @@
-WP_DIR=/home/toteixei/data/wordpress
-DB_DIR=/home/toteixei/data/db
+WP_DIR=/home/sylvain/data/wordpress
+DB_DIR=/home/sylvain/data/db
 
 all: run
 
@@ -8,15 +8,15 @@ build_volume:
 	test -d $(DB_DIR) || sudo mkdir -p $(DB_DIR)
 
 rm_vol: down
-	docker volume rm srcs_db_vol || true
-	docker volume rm srcs_wp_vol || true
+	docker volume rm srcs_mariadb_volume || true
+	docker volume rm srcs_wordpress_volume || true
 	sudo rm -rf $(WP_DIR) || true
 	sudo rm -rf $(DB_DIR) || true
 
 vol: down rm_vol build_volume
 
 run: build_volume
-	docker network create inception || true; 
+	#docker network create inception || true; 
 	docker compose -f srcs/docker-compose.yml up --build  -d
 
 down: 

@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   nginx:
@@ -30,7 +30,7 @@ services:
       - mariadb
   mariadb:
     container_name: mariadb
-    build: ./requirements/mariadb/.
+    build: ./requirements/mariadb_test/.
     restart: always
     volumes:
       - mariadb_volume:/var/lib/mysql
@@ -38,8 +38,8 @@ services:
       - inception
     env_file : 
       - .env
-    expose:
-      - 3306
+    ports:
+      - 3306:3306
 
 volumes:
   mariadb_volume:
@@ -47,14 +47,15 @@ volumes:
     driver_opts: 
       type: none
       o: bind
-      device: /home/azureuser/data/db
+      device: /home/sylvain/data/db
   wordpress_volume:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/azureuser/data/wordpress
+      device: /home/sylvain/data/wordpress
 
 networks:
   inception:
     name: inception
+    driver: bridge
