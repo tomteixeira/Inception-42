@@ -1,5 +1,6 @@
-WP_DIR=/home/sylvain/data/wordpress
-DB_DIR=/home/sylvain/data/db
+WP_DIR=/home/toteixei/data/wordpress
+DB_DIR=/home/toteixei/data/db
+
 
 all: run
 

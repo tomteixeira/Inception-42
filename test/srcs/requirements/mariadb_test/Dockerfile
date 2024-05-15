@@ -3,11 +3,21 @@ FROM debian:bullseye
 RUN apt-get update
 RUN apt-get install -y mariadb-server
 
+
 EXPOSE 3306
+
 
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
 COPY ./tools /var/www/
 
-RUN service mariadb start && mariadb < /var/www/initial_db.sql && rm -f /var/www/initial_db.sql;
+COPY ./tools/launch.sh .
+# COPY ./tools/script.sh .
+RUN chmod +x launch.sh
 
-CMD ["mysqld"]
+# RUN "./launch.sh"
+
+# RUN service mariadb start && mariadb < /var/www/db.sql
+
+CMD ["./launch.sh"]
+
+# CMD ["./launch.sh"]
